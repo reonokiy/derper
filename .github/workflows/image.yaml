@@ -43,3 +43,9 @@ jobs:
           trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
           printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin >/dev/null
           docker push ghcr.io/reonokiy/derper:sha-${GITHUB_SHA}
+
+      - name: Verify anonymous pull
+        if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p "$RUNNER_TEMP/anon-docker"
+          DOCKER_CONFIG="$RUNNER_TEMP/anon-docker" docker manifest inspect ghcr.io/reonokiy/derper:sha-${GITHUB_SHA} >/dev/null

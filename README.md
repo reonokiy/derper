@@ -10,9 +10,8 @@ The production Kubernetes deployment lives in
 GHCR image by digest, points `-verify-client-url` at Headscale's `/verify`
 endpoint, and explicitly sets `-verify-client-url-fail-open=false`.
 
-The image starts no service without arguments. Run `derper -h` to inspect
-upstream options. The Kubernetes deployment terminates TLS at Envoy Gateway,
+Run `derper -h` to inspect upstream options. The Kubernetes deployment
+terminates TLS at Envoy Gateway,
 so `derper` listens on an internal HTTP port and exposes STUN directly over
-UDP/3478. The public DERP package must be set to **Public** in GitHub Packages
-before Kubernetes can pull it without a registry credential; repository
-visibility alone does not change package visibility.
+UDP/3478. CI verifies that the published image can be pulled anonymously;
+repository and GHCR package visibility are checked independently.
